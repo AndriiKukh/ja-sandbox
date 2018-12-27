@@ -1,8 +1,11 @@
 package hello;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -10,7 +13,11 @@ public class Book {
     @Id
     @GeneratedValue
     private Long id;
-    private String author;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
     private String title;
     private int published;
     private double price;
@@ -18,7 +25,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String author, String title, int published, double price) {
+    public Book(Author author, String title, int published, double price) {
         this.author = author;
         this.title = title;
         this.published = published;
@@ -33,11 +40,11 @@ public class Book {
         this.id = id;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -63,6 +70,17 @@ public class Book {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", author=" + author +
+                ", title='" + title + '\'' +
+                ", published=" + published +
+                ", price=" + price +
+                '}';
     }
 }
 
